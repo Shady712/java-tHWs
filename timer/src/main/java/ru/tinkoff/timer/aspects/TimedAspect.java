@@ -3,7 +3,9 @@ package ru.tinkoff.timer.aspects;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
+import ru.tinkoff.timer.annotations.Timed;
 import ru.tinkoff.timer.services.MetricStatProviderImpl;
 
 import java.time.Instant;
@@ -17,7 +19,11 @@ public class TimedAspect {
         this.metricStatProvider = metricStatProvider;
     }
 
-    @Around("@annotation(ru.tinkoff.timer.annotations.Timed)")
+    @Pointcut("@target(timed)")
+    public void targetTimedAnnotation(Timed timed) {
+    }
+
+    @Around("@within(ru.tinkoff.timer.annotations.Timed) || @annotation(ru.tinkoff.timer.annotations.Timed)")
     public Object interceptTimedMethod(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         final var methodName = proceedingJoinPoint.getSignature().getName();
         final var stat = metricStatProvider.findStatByName(methodName);

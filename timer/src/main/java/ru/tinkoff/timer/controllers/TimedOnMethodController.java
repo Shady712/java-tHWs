@@ -7,12 +7,10 @@ import java.util.List;
 import java.util.Random;
 
 @RestController
-public class BlockingController {
+public class TimedOnMethodController extends AbstractController {
 
     @Timed
     public void sleep() throws InterruptedException {
         Thread.sleep(times.get(new Random().nextInt(3)));
     }
-
-    private static final List<Integer> times = List.of(100, 200, 300);
 }

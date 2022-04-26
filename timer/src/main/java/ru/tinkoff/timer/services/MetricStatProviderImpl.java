@@ -32,4 +32,8 @@ public class MetricStatProviderImpl {
     public void setStatWithName(String methodName, MethodMetricStat stat) {
         stats.putIfAbsent(methodName, stat);
     }
+
+    public void resetMetrics() {
+        stats.clear();
+    }
 }
